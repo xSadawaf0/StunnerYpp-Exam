@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 02, 2023 at 04:33 PM
+-- Generation Time: Jun 02, 2023 at 04:42 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -33,7 +33,8 @@ CREATE TABLE `songs` (
   `artist` varchar(255) NOT NULL,
   `lyrics` text NOT NULL,
   `active` tinyint(1) NOT NULL,
-  `update_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `update_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `date_created` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
