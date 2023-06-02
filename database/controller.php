@@ -39,9 +39,10 @@ function listSongs(){
 function addSong($title, $artist, $lyrics, $active = true)
 {
     global $conn;
-    $sql = "INSERT INTO songs (title, artist, lyrics, active) VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO songs (title, artist, lyrics, active, date_created) VALUES (?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($sql);
+    $date = date('Y-m-d');
     $stmt->bind_param("sssi", $title, $artist, $lyrics, $active);
 
     if ($stmt->execute()) {
