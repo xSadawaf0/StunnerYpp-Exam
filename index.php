@@ -27,6 +27,7 @@ require_once 'database/controller.php';
                     <th>Title</th>
                     <th>Artist</th>
                     <th>Lyrics</th>
+                    <th>Date Created</th>
                     <th colspan="2">Action</th>
                 </tr>
             </thead>
@@ -40,6 +41,7 @@ require_once 'database/controller.php';
                     echo '<td>' . $row['title'] . '</td>';
                     echo '<td>' . $row['artist'] . '</td>';
                     echo '<td>' . $row['lyrics'] . '</td>';
+                    echo '<td>' . $row['date_created'] . '</td>';
                     ?>
                     <td>
                         <form action="database/controller.php" method="POST">

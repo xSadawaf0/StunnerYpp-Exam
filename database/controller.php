@@ -39,7 +39,8 @@ function listSongs(){
 function addSong($title, $artist, $lyrics)
 {
     global $conn;
-    $sql = "INSERT INTO songs (title, artist, lyrics, active) VALUES ('$title', '$artist', '$lyrics', 1)";
+    $date = date('Y-m-d');
+    $sql = "INSERT INTO songs (title, artist, lyrics, active, date_created) VALUES ('$title', '$artist', '$lyrics', 1, '$date')";
     if ($conn->query($sql) === TRUE) {
         $_SESSION['message'] = "New entry created successfully";
     } else {
