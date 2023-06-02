@@ -36,14 +36,15 @@ function listSongs(){
 }
 
 
-function addSong($title, $artist, $lyrics, $active = true)
+function addSong($title, $artist, $lyrics, $active = true, $date = null)
 {
     global $conn;
     $sql = "INSERT INTO songs (title, artist, lyrics, active, date_created) VALUES (?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($sql);
     $date = date('Y-m-d');
-    $stmt->bind_param("sssi", $title, $artist, $lyrics, $active);
+    $active = $active ? 1 : 0;
+    $stmt->bind_param("sssis", $title, $artist, $lyrics, $active, $date);
 
     if ($stmt->execute()) {
         $_SESSION['message'] = "New entry created successfully";
@@ -54,6 +55,8 @@ function addSong($title, $artist, $lyrics, $active = true)
     header("Location: ../index.php");
     exit();
 }
+
+
 
 
 function updateSong($id, $title = null, $artist = null, $lyrics = null)
