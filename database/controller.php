@@ -36,44 +36,57 @@ function listSongs(){
 }
 
 
-function addSong($title, $artist, $lyrics)
+function addSong($title, $artist, $lyrics, $active = true)
 {
     global $conn;
-    $date = date('Y-m-d');
-    $sql = "INSERT INTO songs (title, artist, lyrics, active, date_created) VALUES ('$title', '$artist', '$lyrics', 1, '$date')";
-    if ($conn->query($sql) === TRUE) {
+    $sql = "INSERT INTO songs (title, artist, lyrics, active) VALUES (?, ?, ?, ?)";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sssi", $title, $artist, $lyrics, $active);
+
+    if ($stmt->execute()) {
         $_SESSION['message'] = "New entry created successfully";
     } else {
-        $_SESSION['message'] = "Error: " . $sql . "<br>" . $conn->error;
+        $_SESSION['message'] = "Error: " . $stmt->error;
     }
-    
+
     header("Location: ../index.php");
     exit();
 }
 
-function updateSong($id, $title = null, $artist = null, $lyrics = null) {
+
+function updateSong($id, $title = null, $artist = null, $lyrics = null)
+{
     global $conn;
-    $sql = "UPDATE songs SET ";
+    $sql = "UPDATE songs SET";
     $updates = array();
+    $params = array();
 
     if ($title !== null) {
-        $updates[] = "title='$title'";
+        $updates[] = "title = ?";
+        $params[] = $title;
     }
     if ($artist !== null) {
-        $updates[] = "artist='$artist'";
+        $updates[] = "artist = ?";
+        $params[] = $artist;
     }
     if ($lyrics !== null) {
-        $updates[] = "lyrics='$lyrics'";
+        $updates[] = "lyrics = ?";
+        $params[] = $lyrics;
     }
 
-    $sql .= implode(', ', $updates) . " WHERE id='$id'";
-    
-    if ($conn->query($sql) === TRUE) {
+    $sql .= " " . implode(', ', $updates) . " WHERE id = ?";
+    $params[] = $id;
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param(str_repeat("s", count($params)), ...$params);
+
+    if ($stmt->execute()) {
         $_SESSION['message'] = "Entry updated successfully";
     } else {
-        $_SESSION['message'] = "Error: " . $sql . "<br>" . $conn->error;
+        $_SESSION['message'] = "Error: " . $stmt->error;
     }
-    
+
     header("Location: ../index.php");
     exit();
 }
